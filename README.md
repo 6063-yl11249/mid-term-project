@@ -1,4 +1,28 @@
-# The Metaverse: And How It Will Revolutionize Everything, Matthew Ball  
+## The Metaverse: And How It Will Revolutionize Everything, Matthew Ball  
+### Milestone2
+
+**1. What I’ve done this week**
+I’ve created the squares fade in/out effect, the basic line structures and a square moving with the mouse position.
+
+**2. Arrays**
+Squares Array: This array is used to store information about the squares displayed on the canvas.  Each square is represented as an object within the array.  The objects contain properties like x and y coordinates, r for size, and color for the square's color.
+
+Colors Array: This array contains a palette of colors used for filling the squares. The colorIndex variable is used to cycle through the colors in this array.
+
+**3. Interactivity or time-based logic**
+Mouse Interaction: It enables the user to draw a white square that follows the mouse position.  This creates an interactive element as the square moves with the mouse.
+
+Square Animation: The project includes a dynamic animation of squares that fade in and out.  New squares are continually added to the canvas with randomized sizes and colors. The animation logic is time-based, gradually reducing the size of the squares until they disappear.
+
+**4. Description of functions I will write**
+Lines Animation: The code generates a set of lines that create an animated effect. The lines move from left to right, and one side of the lines is influenced by the mouse's horizontal position.
+
+Mouse Click Function: Based on the current white square, I’d like to create the effect that when clicking there are squares bigger and then fade out. 
+![look like](./M2.jpg)
+
+Text Animation: The text of book name comes into the canvas.
+
+### Milestone 1
 
 ![Original book cover](./OriginalBC.jpg)
 

@@ -1,15 +1,51 @@
-let size = 20;
-let numSquares = 1500;
+let size = 30;
+let numSquares = 300;
 let squares = [];
-let colors = ["pink", "lavender", "mediumslateblue", "lightcyan", "lightskyblue"];
-rectMode(CENTER);
+let colors = ["#5d36e7", "#6e44ff", "#936bff", "#b892ff", "#dcaaf1"];
+let colorIndex = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  noStroke();
 }
 
 function draw() {
+  background("AliceBlue");
+
+  //Draw the square moving with mouse
+  fill(255);
+  rect(mouseX, mouseY, 180, 180);
+  //Add the mouse click function to create effect
+
+  // Draw the lines
+  let numLines = 12;
+  for (let l = 0; l <= numLines; l += 1) {
+    x0 = map(l, 0, numLines, 0, width);
+    x1 = map(l, 0, numLines, (4 / 10) * width, (6 / 10) * width);
+    x2 = map(l, 0, numLines, -width, 2 * width);
+    noFill();
+    stroke(0);
+    line(x0, 0, x1, height / 2);
+    line(x1, height / 2, x2, height);
+  }
+  //Make one side of lines moving with mouse
+
+  // Create the squares fade in/ out
+  rectMode(CENTER);
+  noStroke();
+  for (let i = squares.length - 1; i >= 0; i--) {
+    let square = squares[i];
+
+    square.r -= 0.2;
+
+    // If the square's size is less than or equal to 0, remove it from the array
+    if (square.r <= 0) {
+      squares.splice(i, 1);
+    } else {
+      fill(square.color);
+      rect(square.x, square.y, square.r, square.r);
+    }
+  }
+
   if (squares.length < numSquares) {
     let x = random(size, width - size);
     let y = random(size, height - size);
@@ -17,24 +53,16 @@ function draw() {
     let newSquare = {
       x: x,
       y: y,
-      r: squareSize / 2,
-      color: random(colors) // Select a random color from the 'colors' array
+      r: squareSize,
+      color: color(colors[colorIndex]),
     };
 
-    if (!isOverlapping(newSquare)) {
-      squares.push(newSquare);
-      fill(newSquare.color);
-      rect(newSquare.x, newSquare.y, newSquare.r * 2, newSquare.r * 2);
-    }
-  }
-}
+    colorIndex = (colorIndex + 1) % colors.length;
 
-function isOverlapping(newSquare) {
-  for (let square of squares) {
-    let d = dist(newSquare.x, newSquare.y, square.x, square.y);
-    if (d < newSquare.r + square.r) {
-      return true;
-    }
+    squares.push(newSquare);
+    fill(newSquare.color);
+    rect(newSquare.x, newSquare.y, newSquare.r, newSquare.r);
   }
-  return false;
+
+  //Add text of the book title
 }
