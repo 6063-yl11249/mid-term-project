@@ -9,10 +9,10 @@ function setup() {
 }
 
 function draw() {
-  background("AliceBlue");
+  background(0);
 
   //Draw the square moving with mouse
-  fill(255);
+  fill("deeppink");
   rect(mouseX, mouseY, 180, 180);
   //Add the mouse click function to create effect
 
@@ -23,7 +23,7 @@ function draw() {
     x1 = map(l, 0, numLines, (4 / 10) * width, (6 / 10) * width);
     x2 = map(l, 0, numLines, -width, 2 * width);
     noFill();
-    stroke(0);
+    stroke(255);
     line(x0, 0, x1, height / 2);
     line(x1, height / 2, x2, height);
   }

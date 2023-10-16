@@ -13,7 +13,7 @@ Colors Array: This array contains a palette of colors used for filling the squar
 
 **3. Interactivity or time-based logic**  
 
-Mouse Interaction: It enables the user to draw a white square that follows the mouse position. This creates an interactive element as the square moves with the mouse.
+Mouse Interaction: It enables the user to draw a deep pink square that follows the mouse position. This creates an interactive element as the square moves with the mouse.
 
 Square Animation: This includes a dynamic animation of squares that fade in and out. New squares are continually added to the canvas with randomized sizes and colors. It reduces the size of the squares until they disappear.
 
