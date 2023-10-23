@@ -4,6 +4,16 @@ let squares = [];
 let colors = ["#5d36e7", "#6e44ff", "#936bff", "#b892ff", "#dcaaf1"];
 let colorIndex = 0;
 
+let squareMouse = [];
+
+let mFont;
+let mSize = 120;
+let word = "The Metaverse";
+
+function preload() {
+  mFont = loadFont("./Lostar.ttf");
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 }
@@ -12,9 +22,23 @@ function draw() {
   background(0);
 
   //Draw the square moving with mouse
-  fill("deeppink");
-  rect(mouseX, mouseY, 180, 180);
+squareMouse.push({ x: mouseX, y: mouseY, alpha: 5 });
+  if (squareMouse.length > 10) {
+    squareMouse.shift();
+  }
+
+  for (let i = 0; i < squareMouse.length; i++) {
+    let currentSquare = squareMouse[i];
+    stroke("deeppink");
+    rect(currentSquare.x, currentSquare.y, 80, 80);
+    currentSquare.alpha += 10; 
+    fill(255, currentSquare.alpha);
+  }
+// Remove completely faded out ellipses
+  squareMouse = squareMouse.filter(rect => rect.alpha > 0);
+
   //Add the mouse click function to create effect
+
 
   // Draw the lines
   let numLines = 12;
@@ -65,4 +89,9 @@ function draw() {
   }
 
   //Add text of the book title
+  textFont(mFont);
+  textSize(mSize);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  text(word, width / 2, height / 2, width-300,height);
 }
