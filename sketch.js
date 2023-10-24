@@ -14,6 +14,25 @@ let mFont;
 let mSize = 120;
 let word = "The Metaverse";
 
+class Square {
+  constructor(x, y, size, color) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.color = color;
+  }
+
+  update() {
+    this.size -= 0.2;
+  }
+
+  display() {
+    noStroke();
+    fill(this.color);
+    rect(this.x, this.y, this.size, this.size);
+  }
+}
+
 function preload() {
   mFont = loadFont("./Lostar.ttf");
 }
@@ -26,7 +45,16 @@ function setup() {
 function draw() {
   background(0);
 
-  //Draw the square moving with mouse
+  drawLines();
+
+  manageSquares();
+
+  addText();
+
+  drawSquareWithMouse();
+}
+
+function drawSquareWithMouse() {
   squareMouse.push({ x: mouseX, y: mouseY, alpha: 5 });
   if (squareMouse.length > 10) {
     squareMouse.shift();
@@ -35,25 +63,26 @@ function draw() {
   for (let i = 0; i < squareMouse.length; i++) {
     let currentSquare = squareMouse[i];
     stroke("deeppink");
+    strokeWeight(3);
     rect(currentSquare.x, currentSquare.y, 80, 80);
     currentSquare.alpha += 10;
     fill(255, currentSquare.alpha);
   }
-  // Remove completely faded out squares
+
   squareMouse = squareMouse.filter((rect) => rect.alpha > 0);
+}
 
-  // Draw the lines
+function drawLines() {
   let currentTime = millis() - startTime;
-
+  strokeWeight(1);
   for (let i = 0; i <= numLines; i++) {
-    let x0 = map(i, 0, numLines, 0, width); 
-    let t = sin(currentTime * 0.001 * speed + PI / 2); // Adjust the speed factor with a phase shift
+    let x0 = map(i, 0, numLines, 0, width);
+    let t = sin(currentTime * 0.001 * speed + PI / 2);
     let x1Initial = map(i, 0, numLines, (4 / 10) * width, (6 / 10) * width);
     let x2 = map(i, 0, numLines, 0, width);
     let x1 = x1Initial;
 
     if (i <= numLines / 2) {
-      // Move to the left for the first half
       let moveDistance = map(abs(t), 0, 1, 0, (4 / 10) * width);
       if (t > 0) {
         x1 = max(x0, x1Initial - moveDistance);
@@ -61,34 +90,40 @@ function draw() {
         x1 = min(x1Initial, x1Initial + moveDistance);
       }
     } else {
-      // Move to the right for the second half
-      let moveDistance = map(abs(t), 0, 1, 0, (4 / 10) * width);
+      let moveDistance = map(abs(t), 0, 1, 0, width - (6 / 10) * width);
       if (t > 0) {
-        x1 = min(x2, x1Initial + moveDistance);
+        x1 = min(x1Initial + moveDistance, x0);
       } else {
-        x1 = max(x1Initial, x1Initial - moveDistance);
+        x1 = max(x1Initial - moveDistance, x1Initial);
       }
     }
 
-    let y1 = height / 2;
-    line(x0, 0, x1, y1);
-    line(x1, y1, x2, height);
+    line(x0, 0, x1, height / 2);
+    line(x1, height / 2, x2, height);
   }
+}
 
-  // Create the squares fade in/ out
+function addText() {
+  textFont(mFont);
+  textSize(mSize);
+  fill("#cdb4db");
+  stroke("#ffc8dd");
+  strokeWeight(8);
+  strokeJoin(ROUND);
+  textAlign(CENTER, CENTER);
+  text(word, width / 2, height / 2, width - 300, height);
+}
+
+function manageSquares() {
   rectMode(CENTER);
-  noStroke();
   for (let i = squares.length - 1; i >= 0; i--) {
     let square = squares[i];
+    square.update();
 
-    square.r -= 0.2;
-
-    // If the square's size is less than or equal to 0, remove it from the array
-    if (square.r <= 0) {
+    if (square.size <= 0) {
       squares.splice(i, 1);
     } else {
-      fill(square.color);
-      rect(square.x, square.y, square.r, square.r);
+      square.display();
     }
   }
 
@@ -96,24 +131,11 @@ function draw() {
     let x = random(size, width - size);
     let y = random(size, height - size);
     let squareSize = size + random(-10, 10);
-    let newSquare = {
-      x: x,
-      y: y,
-      r: squareSize,
-      color: color(colors[colorIndex]),
-    };
+    let newSquare = new Square(x, y, squareSize, color(colors[colorIndex]));
 
     colorIndex = (colorIndex + 1) % colors.length;
 
     squares.push(newSquare);
-    fill(newSquare.color);
-    rect(newSquare.x, newSquare.y, newSquare.r, newSquare.r);
+    newSquare.display();
   }
-
-  //Add text of the book title
-  textFont(mFont);
-  textSize(mSize);
-  fill(255);
-  textAlign(CENTER, CENTER);
-  text(word, width / 2, height / 2, width - 300, height);
 }
